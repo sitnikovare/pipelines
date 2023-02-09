@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "meetdagster"
+version = "0.1.0"
+description = "Goal of this project - try dagster"
+authors = ["Ruslana Sitnikova <sitnikovare@gmail.com>"]
+readme = "README.md"
+packages = [
+    {include = "meetdagster"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dagster = "^1.1.17"
+pandas = "^1.5.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.dagster]
+module_name = "meetdagster"

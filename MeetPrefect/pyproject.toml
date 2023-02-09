@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "meetprefect"
+version = "1.0.0"
+description = ""
+authors = ["Ruslana Sitnikova <sitnikovare@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "prefect_project" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+prefect = {extras = ["viz"], version = "^2.7.12"}
+pandas = "^1.5.3"
+
+[tool.poetry.scripts]
+hello-prefect = "prefect_project.run_prefect:start"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
