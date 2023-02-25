@@ -7,6 +7,7 @@
 poetry run pipeline list
 ```
 
+### Result
 Output (fake for now):
 ```
 INFO: function pipelines_list
