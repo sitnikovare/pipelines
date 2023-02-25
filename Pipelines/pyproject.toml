@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "piplines"
+version = "0.1.0"
+description = ""
+authors = ["sitnikovare <sitnikovare@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "main" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.1.3"
+
+[tool.poetry.scripts]
+pipeline = "main.scripts.cli_commands:pipeline"
+pipelines-run = "main.pipelines_scripts.main_commands:pipelines_run"
+pipelines-list = "main.pipelines_scripts.main_commands:pipelines_list"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
