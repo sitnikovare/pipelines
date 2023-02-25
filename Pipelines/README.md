@@ -6,8 +6,6 @@
 ```
 poetry run pipeline list
 ```
-
-### Result
 Output (fake for now):
 ```
 INFO: function pipelines_list
@@ -18,7 +16,6 @@ INFO: function pipelines_list
 ```
 poetry run pipeline run
 ```
-
 Output (fake for now):
 
 ```
