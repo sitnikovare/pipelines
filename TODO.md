@@ -1,3 +1,4 @@
+
 Goals:
 - Base knowledge: Python + Data (DB, Pandas, Web)
 - Understand role of data pipelines
