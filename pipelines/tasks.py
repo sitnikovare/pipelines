@@ -137,7 +137,7 @@ class DBmanager:
         cols = csv_table.columns
         cols_info = ""
         cols_str = ""
-        for col in cols[:len(cols)-2]:
+        for col in cols[:len(cols)-1]:
             cols_info += col + " TEXT,"
             cols_str += col + ", "
         cols_info += cols[-1] + " TEXT"
@@ -146,12 +146,12 @@ class DBmanager:
         print("DBMANAGER_INFO: SQL query - ", query_create_table)
         # execute_query(self, query_create_table)
 
-        i = 1
-        row = list(csv_table.loc[[i]])
-        print(row)
-        query_insert = "INSERT INTO " + table_name + "(" + cols_str + ") VALUES ("
-        cur_values = ""
-        for val in range(len(row)-1):
-            cur_values += "\'" + row[val] + "\',"
-        query_insert += cur_values + "\'" + row[-1] + "\')"
-        print("DBMANAGER_INFO: SQL query - ", query_insert)
+        for rowIndex, row in csv_table.iterrows():
+            query_insert = "INSERT INTO " + table_name + " (" + cols_str + ") VALUES ("
+            cur_values = ""
+            for columnIndex, value in row.items():
+                if columnIndex == cols[-1]:
+                    break
+                cur_values += "\'" + str(value) + "\',"
+            query_insert += cur_values + "\'" + row[-1] + "\')"
+            print("DBMANAGER_INFO: SQL query - ", query_insert)
