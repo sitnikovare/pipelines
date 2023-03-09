@@ -10,6 +10,7 @@ class BaseTask:
 
     def safe_table_object(self, object_from_loader):
         self.table_object = object_from_loader
+        return self.table_object
 
     def run(self):
         raise RuntimeError('Do not run BaseTask!')
@@ -27,7 +28,7 @@ class CopyToFile(BaseTask):
 
     def __init__(self, table, output_file):
         self.table = table
-        self.output_file = output_file
+        self.output_file = output_file + ".csv"
 
     def short_description(self):
         return f'{self.table} -> {self.output_file}'
@@ -41,6 +42,7 @@ class LoadFile(BaseTask):
     """Load file to table"""
 
     def __init__(self, table, input_file):
+        self.table_name = None
         self.table = table
         self.input_file = input_file
 
@@ -49,11 +51,12 @@ class LoadFile(BaseTask):
 
     def run(self):
         print(f"Load file `{self.input_file}` to table `{self.table}`")
+        self.table_name = self.table
         self.table = pd.read_csv(self.input_file)
         BaseTask.safe_table_object(BaseTask, self.table)
-        print("Table shape:", self.table.shape)
+        # print("Table shape:", self.table.shape)
         dbm = DBmanager("sqlite_080323.db")
-        dbm.create_table_from_csv(BaseTask.table_object, "test_py")
+        dbm.create_table_from_csv(BaseTask.table_object, self.table_name)
 
 
 
@@ -69,6 +72,8 @@ class RunSQL(BaseTask):
 
     def run(self):
         print(f"Run SQL ({self.title}):\n{self.sql_query}")
+        dbm = DBmanager("sqlite_080323.db")
+        dbm.execute_query(self.sql_query)
 
 
 def domain_of_url(data):
@@ -90,6 +95,8 @@ class CTAS(BaseTask):
     def run(self):
         print(f"Create table `{self.table}` as SELECT:\n{self.sql_query}")
         BaseTask.table_object_norm = domain_of_url(BaseTask.table_object)
+        dbm = DBmanager("sqlite_080323.db")
+        dbm.create_table_from_csv(BaseTask.table_object_norm, self.table)
 
 class DBmanager:
 
@@ -103,12 +110,12 @@ class DBmanager:
             connection_line = 'D:\CSIT\Sem8_Pipelines\pipelines\pipelines\dbmanager\database\\' + self.db_file
             sqlite_connection = sqlite3.connect(connection_line)
             cursor = sqlite_connection.cursor()
-            print("DBMANAGER_INFO: Connection successfully opened")
+            # print("DBMANAGER_INFO: Connection successfully opened")
 
-            sqlite_select_query = "select sqlite_version();"
-            cursor.execute(sqlite_select_query)
-            record = cursor.fetchall()
-            print("DBMANAGER_INFO: SQLite DB version: ", record)
+            # sqlite_select_query = "select sqlite_version();"
+            # cursor.execute(sqlite_select_query)
+            # record = cursor.fetchall()
+            # print("DBMANAGER_INFO: SQLite DB version: ", record)
             cursor.close()
 
         except sqlite3.Error as error:
@@ -118,16 +125,18 @@ class DBmanager:
 
     def close(self,):
         self.connection.close()
-        print("DBMANAGER_INFO: Connection to SQLite closed")
+        # print("DBMANAGER_INFO: Connection to SQLite closed")
 
     def execute_query(self, sql_query):
         try:
-            print("DBMANAGER_INFO: SQL query - ", sql_query)
+            # print("DBMANAGER_INFO: SQL query - ", sql_query)
+            self.connection = self.connect()
             cursor = self.connection.cursor()
             cursor.execute(sql_query)
             self.connection.commit()
-            print(cursor.fetchall())
+            # print(cursor.fetchall())
             cursor.close()
+            self.close()
 
         except sqlite3.Error as error:
             print("DBMANAGER_ERROR: ", error)
@@ -143,8 +152,8 @@ class DBmanager:
         cols_info += cols[-1] + " TEXT"
         cols_str += cols[-1]
         query_create_table = "CREATE TABLE " + table_name + " (" + cols_info + ")"
-        print("DBMANAGER_INFO: SQL query - ", query_create_table)
-        # execute_query(self, query_create_table)
+        # print("DBMANAGER_INFO: SQL query - ", query_create_table)
+        self.execute_query(query_create_table)
 
         for rowIndex, row in csv_table.iterrows():
             query_insert = "INSERT INTO " + table_name + " (" + cols_str + ") VALUES ("
@@ -154,4 +163,5 @@ class DBmanager:
                     break
                 cur_values += "\'" + str(value) + "\',"
             query_insert += cur_values + "\'" + row[-1] + "\')"
-            print("DBMANAGER_INFO: SQL query - ", query_insert)
+            # print("DBMANAGER_INFO: SQL query - ", query_insert)
+            self.execute_query(query_insert)

@@ -20,8 +20,8 @@ TASKS = [
     ),
 
     # clean up:
-    tasks.RunSQL('drop table {original}'),
-    tasks.RunSQL('drop table {norm}'),
+    # tasks.RunSQL('drop table original'),
+    # tasks.RunSQL('drop table norm'),
 ]
 
 
