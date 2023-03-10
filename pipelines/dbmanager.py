@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 
 class DBmanager:
@@ -9,8 +10,8 @@ class DBmanager:
 
     def connect(self):
         try:
-            connection_line = 'D:\CSIT\Sem8_Pipelines\pipelines\pipelines\database\\' + self.db_file
-            sqlite_connection = sqlite3.connect(connection_line)
+            dbpath = os.path.abspath("../pipelines/database/" + self.db_file)
+            sqlite_connection = sqlite3.connect(dbpath)
             cursor = sqlite_connection.cursor()
             # print("DBMANAGER_INFO: Connection successfully opened")
 
