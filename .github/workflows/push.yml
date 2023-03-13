@@ -1,0 +1,13 @@
+name: BuildAndRun
+on:
+  push:
+    branches: 
+      - WIN_dockerize
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: compose up
+      run: docker compose up -d --build
+    - name: show run logs
+      run: docker compose logs pipelines

@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  pipelines:
+    build: .
+    container_name: pipelines
+    volumes:
+      - ./example_pipeline:/pipelines/example_pipeline
+      - ./original:/pipelines/original
+      - ./output:/pipelines/output
