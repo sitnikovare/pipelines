@@ -10,5 +10,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: compose up
       run: docker compose up -d --build
-    - name: show run logs
-      run: docker compose logs pipelines
+    - name: go to output folder
+      run: cd output
+    - name: show norm_csv file
+      run: head -n 5 norm.csv
