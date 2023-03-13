@@ -11,6 +11,6 @@ jobs:
     - name: compose up
       run: docker compose up -d --build
     - name: go to output folder
-      run: cd output
+      run: cd pipelines/output
     - name: show norm_csv file
       run: head -n 5 norm.csv
