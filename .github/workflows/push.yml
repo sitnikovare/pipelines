@@ -13,4 +13,4 @@ jobs:
     - name: Docker run
       run: docker run pipelines
     - name: check norm csv file
-      run: cd output & head -n5 norm.csv
+      run: cd output & ls -a & head -n5 norm.csv
