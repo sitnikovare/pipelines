@@ -11,7 +11,8 @@ jobs:
     - name: Docker build
       run: docker build -t pipelines .
     - name: Docker run
-      run: docker run pipelines
+      working-directory: ./example_pipeline
+      run: docker run pipelines poetry run pipeline run
     - name: check norm csv file
       working-directory: ./output
-      run: ls -a & head -n5 norm.csv
+      run: head -n5 norm.csv
