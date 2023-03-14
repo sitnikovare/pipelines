@@ -10,5 +10,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Docker compose up
       run: docker compose up -d --build
-    - name: Show docker logs
-      run: docker logs pipelines
+    - name: Dump docker logs
+      uses: jwalton/gh-docker-logs@v2
