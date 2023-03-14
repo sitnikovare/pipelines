@@ -1,4 +1,4 @@
-name: BuildAndRun
+name: Build and Run Docker Container
 on:
   push:
     branches: 
@@ -8,9 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: compose up
+    - name: Docker compose up
       run: docker compose up -d --build
-    - name: go to output folder
-      run: cd pipelines/output
-    - name: show norm_csv file
-      run: head -n 5 norm.csv
+    - name: Show docker logs
+      run: docker logs pipelines
