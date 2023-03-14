@@ -1,16 +1,18 @@
 name: Build and Run Docker Container
 on:
   push:
-    branches: 
+    branches:
       - WIN_dockerize
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Docker compose up
-      run: docker compose up -d --build
-    - name: Dump docker logs
+    - name: Docker build
+      run: docker build -t pipelines .
+    - name: Docker run
+      run: docker run pipelines --mount=.
+    - name: jwalton dump docker logs
       uses: jwalton/gh-docker-logs@v2
-    - name: Docker compose logs
+    - name: pipeline logs
       run: docker compose logs -f -t pipelines
