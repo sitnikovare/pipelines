@@ -10,11 +10,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Docker build
       run: docker build -t pipelines .
-    - name: ls
-      run: ls -a
     - name: Docker run
       run: docker run pipelines
-    - name: jwalton dump docker logs
-      uses: jwalton/gh-docker-logs@v2
-    - name: pipeline logs
-      run: docker compose logs -f -t pipelines
+    - name: check norm csv file
+      run: cd output & head -n5 norm.csv
