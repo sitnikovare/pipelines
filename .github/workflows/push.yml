@@ -9,8 +9,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker compose up
-      run: docker compose up -d --build --no-TTY
+      run: docker compose up -d --build
     - name: Dump docker logs
       uses: jwalton/gh-docker-logs@v2
-    - name: ls command in current directory
-      run: ls -a
+    - name: Docker compose logs
+      run: docker compose logs -f -t pipelines
