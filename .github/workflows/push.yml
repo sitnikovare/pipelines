@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: [build] Docker build
+    - name: Docker build
       run: docker build -t pipelines .
-    - name: [run] Docker run
+    - name: Docker run
       run: docker run pipelines
-    - name: [check] Check norm.csv file
+    - name: Check norm csv file
       working-directory: ./output
       run: head -n5 norm.csv
