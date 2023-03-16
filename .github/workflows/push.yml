@@ -11,4 +11,4 @@ jobs:
     - name: Docker compose up
       run: docker compose up -d
     - name: Docker logs
-      run: docker logs -f -t
+      run: docker compose logs -f -t
