@@ -4,14 +4,14 @@ on:
     branches:
       - WIN_dockerize
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Docker build
+    - name: [build] Docker build
       run: docker build -t pipelines .
-    - name: Docker run
+    - name: [run] Docker run
       run: docker run pipelines
-    - name: check norm csv file
+    - name: [check] Check norm.csv file
       working-directory: ./output
       run: head -n5 norm.csv
