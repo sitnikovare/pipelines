@@ -11,7 +11,7 @@ jobs:
     - name: Docker build
       run: docker build -t pipelines .
     - name: Docker run
-      run: docker run pipelines
+      run: docker run pipelines --mount=.
     - name: Check norm csv file
       working-directory: ./output
       run: head -n5 norm.csv
