@@ -1,0 +1,14 @@
+name: Build and Run Docker Container
+on:
+  push:
+    branches:
+      - WIN_dockerize
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker compose up
+      run: docker compose up -d
+    - name: Docker logs
+      run: docker compose logs -f -t
