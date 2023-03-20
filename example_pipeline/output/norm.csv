@@ -1,0 +1,2 @@
+id,name,url,domain_of_url(url)
+"('1', 'hello', 'http://hello.com', 'hello.com')","('2', 'world', 'https://world.org', 'world.org')"
