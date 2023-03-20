@@ -1,16 +1,23 @@
 import sqlite3
 import os
+import csv
+import re
 
+def domain_of_url(str_s):
+    return re.sub('\/.*', '', re.sub('^https?:\/\/', '', str_s))
 
 class DBmanager:
     def __init__(self, db_file):
         self.db_file = db_file
         self.connection = self.connect()
+        self.connection.create_function("domain_of_url", 1, domain_of_url)
         self.close()
 
     def connect(self):
         try:
-            dbpath = os.path.abspath("pipelines/database/" + self.db_file)
+            dbpath = os.path.abspath("../pipelines/database/" + self.db_file)
+            # dbpath = os.path.abspath("pipelines/database/" + self.db_file)
+            # print(dbpath)
             sqlite_connection = sqlite3.connect(dbpath)
             cursor = sqlite_connection.cursor()
             # print("DBMANAGER_INFO: Connection successfully opened")
@@ -34,11 +41,11 @@ class DBmanager:
         try:
             # print("DBMANAGER_INFO: SQL query - ", sql_query)
             self.connection = self.connect()
-            cursor = self.connection.cursor()
-            cursor.execute(sql_query)
+            self.connection.create_function("domain_of_url", 1, domain_of_url)
+            self.connection.execute(sql_query)
             self.connection.commit()
             # print(cursor.fetchall())
-            cursor.close()
+            # cursor.close()
             self.close()
 
         except sqlite3.Error as error:
@@ -54,7 +61,7 @@ class DBmanager:
             cols_str += col + ", "
         cols_info += cols[-1] + " TEXT"
         cols_str += cols[-1]
-        query_create_table = "CREATE TABLE " + table_name + " (" + cols_info + ")"
+        query_create_table = "CREATE TABLE IF NOT EXISTS " + table_name + " (" + cols_info + ")"
         # print("DBMANAGER_INFO: SQL query - ", query_create_table)
         self.execute_query(query_create_table)
 
@@ -68,3 +75,16 @@ class DBmanager:
             query_insert += cur_values + "\'" + row[-1] + "\')"
             # print("DBMANAGER_INFO: SQL query - ", query_insert)
             self.execute_query(query_insert)
+
+    def load_table_to_file(self, table, file):
+        self.connection = self.connect()
+        sql_query = f"SELECT * from {table};"
+        cursor = self.connection.cursor()
+        cursor.execute(sql_query)
+        filepath = "output/" + file
+        with open(filepath, 'w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow([i[0] for i in cursor.description])
+            csv_writer.writerows(cursor.execute(sql_query))
+        cursor.close()
+        self.close()

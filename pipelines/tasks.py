@@ -1,3 +1,5 @@
+import csv
+
 import pandas as pd
 import sqlite3
 from .dbmanager import DBmanager
@@ -36,7 +38,9 @@ class CopyToFile(BaseTask):
 
     def run(self):
         print(f"Copy table `{self.table}` to file `{self.output_file}`")
-        BaseTask.table_object_norm.to_csv("output/" + self.output_file, index=False)
+        # BaseTask.table_object_norm.to_csv("output/" + self.output_file, index=False)
+        dbm = DBmanager("sqlite_080323.db")
+        dbm.load_table_to_file(self.table, self.output_file)
 
 
 class LoadFile(BaseTask):
@@ -77,7 +81,7 @@ class RunSQL(BaseTask):
         dbm.execute_query(self.sql_query)
 
 
-def domain_of_url(data):
+def domain_of_url_old(data):
     data['domain_of_url'] = data['url'].replace(to_replace='^https?:\/\/', value='', regex=True)
     return data
 
@@ -94,7 +98,9 @@ class CTAS(BaseTask):
         return f'{self.title}'
 
     def run(self):
-        print(f"Create table `{self.table}` as SELECT:\n{self.sql_query}")
-        BaseTask.table_object_norm = domain_of_url(BaseTask.table_object)
+        create_query = f"Create table IF NOT EXISTS {self.table} as {self.sql_query}"
+        print(create_query)
+        # BaseTask.table_object_norm = domain_of_url_old(BaseTask.table_object)
         dbm = DBmanager("sqlite_080323.db")
-        dbm.create_table_from_csv(BaseTask.table_object_norm, self.table)
+        dbm.execute_query(create_query)
+        # dbm.create_table_from_csv(BaseTask.table_object_norm, self.table)

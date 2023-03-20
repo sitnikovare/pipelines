@@ -11,7 +11,7 @@ TASKS = [
         table='norm',
         sql_query='''
             select *, domain_of_url(url)
-            from {original};
+            from original;
         '''
     ),
     tasks.CopyToFile(
