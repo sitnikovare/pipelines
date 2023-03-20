@@ -12,4 +12,4 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-ENTRYPOINT [ "python", "example_pipeline/pipeline.py"]
+ENTRYPOINT [ "bash", "start_poetry.sh"]

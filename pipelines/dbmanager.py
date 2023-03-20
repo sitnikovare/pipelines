@@ -15,8 +15,8 @@ class DBmanager:
 
     def connect(self):
         try:
-            # dbpath = os.path.abspath("../pipelines/database/" + self.db_file)
-            dbpath = os.path.abspath("pipelines/database/" + self.db_file)
+            dbpath = os.path.abspath("../pipelines/database/" + self.db_file)
+            # dbpath = os.path.abspath("pipelines/database/" + self.db_file)
             # print(dbpath)
             sqlite_connection = sqlite3.connect(dbpath)
             cursor = sqlite_connection.cursor()
