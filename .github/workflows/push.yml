@@ -3,7 +3,18 @@ on:
   push:
     branches:
       - WIN_dockerize
+      - test_branch
 jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests for tasks
+        working-directory: test
+        run: poetry run pytest .
+      - name: Cleanup after tests
+        run: python cleanup.py
+
   pipeline:
     runs-on: ubuntu-latest
     steps:
