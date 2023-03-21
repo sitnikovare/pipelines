@@ -16,12 +16,3 @@ jobs:
     - name: Show norm file
       working-directory: example_pipeline/output
       run: head -n5 norm.csv
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run tests for tasks
-        working-directory: test
-        run: poetry run pytest .
-      - name: Cleanup after tests
-        run: python cleanup.py
